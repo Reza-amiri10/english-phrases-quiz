@@ -75,6 +75,8 @@ function App() {
 export default App;
 
 function Accordion({ data }) {
+  const [curOpen, setCurOpen] = useState(null);
+
   return (
     <div className="accordion">
       {data.map((item, i) => (
@@ -83,22 +85,24 @@ function Accordion({ data }) {
           number={i}
           question={item.question}
           answer={item.description}
+          curOpen={curOpen}
+          onOpen={setCurOpen}
         />
       ))}
     </div>
   );
 }
 
-function AccordionItem({ question, answer, number }) {
-  const [isOpen, setIsOpen] = useState(false);
+function AccordionItem({ question, answer, number, curOpen, onOpen }) {
+  const isOpen = number === curOpen;
   const handleClick = () => {
-    setIsOpen(!isOpen);
+    onOpen(isOpen ? null : number);
   };
   return (
     <div
       tabIndex="0"
       onClick={handleClick}
-      className={` ${isOpen ? "acc-continer is-open-style" : "acc-continer"}`}
+      className={`acc-continer ${isOpen ? " is-open-style" : ""}`}
     >
       <div className="title-box">
         <div className="title">
